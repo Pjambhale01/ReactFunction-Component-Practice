@@ -1,0 +1,54 @@
+ const {userID} = props.match.params;
+     //console.log(props.data.props,userID)
+        const {userId} =props.match.params
+    const findUser = props.edituser.find(item => item.id == userId)
+     const [newData, setNewData] = useState([])
+    
+
+     var handleChange=(e)=>{
+         setNewData({...newData,[e.target.name]:e.target.value})
+     }
+
+     useEffect(()=>{
+         setNewData({
+            name:props.match.userID.name,
+            email:props.data[Number(userID) -1].email,
+            website:props.data[Number(userID)-1].website
+         })
+         console.log(setNewData)
+     })
+
+     <input onChange={(e)=> handleChange} value={newData.name} name="name"></input>
+            <input onChange={(e)=> handleChange} value={newData.email} name="email"></input>
+            <input onChange={(e)=> handleChange} value={newData.website} name="website"></input>
+            
+       //props.history.push('/user')
+        // props.updateData(name,email,website,userId)      
+
+ let updateData=(Name,Email,Website,id)=>{
+        let index = -1
+        users.find((item,ind)=>{
+            if(item.id==id){
+                index = ind
+                return true
+            }
+        })
+        setUser([...users.slice(0,index),{...users[index],name:Name,email:Email,website:Website},...users.slice(index+1)])
+    }
+
+    import React, {​​​​​​​ useState, useEffect, createContext }​​​​​​​ from 'react'
+import axios from 'axios'
+export const DataContex = createContext()
+const DataProvider = ({​​​​​​​ children }​​​​​​​) => {​​​​​​​
+    const [data, setData] = useState([])
+    useEffect(() => {​​​​​​​
+        axios.get('https://jsonplaceholder.typicode.com/users').then(res => setData(res.data))
+        console.log(data)
+    }​​​​​​​, [])
+    return (
+        <DataContex.Provider value={​​​​​​​{​​​​​​​ data, setData }​​​​​​​}​​​​​​​>
+            {​​​​​​​children}​​​​​​​
+        </DataContex.Provider>
+    )
+}​​​​​​​
+export default DataProvider
